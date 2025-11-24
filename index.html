@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Kuis Berhadiah QQRAYA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="logo.png" alt="QQRAYA Logo" class="logo" />
+
+    <div class="card">
+      <h2>EVENT KUIS BERHADIAH QQRAYA</h2>
+      <p class="subtitle">World Cup Qualifiers: UEFA<br>UEFA Qualification: 1st Round: Group A</p>
+
+      <div class="match">
+        <span>🇱🇺 Luxembourg</span>
+        <span class="vs">VS</span>
+        <span>🇩🇪 Germany</span>
+      </div>
+
+      <form id="scoreForm">
+        <input type="text" name="idmember" placeholder="ID Member QQRAYA" required />
+        <input type="text" name="namarek" placeholder="Nama Rekening" required />
+        <input type="text" name="rekening" placeholder="Nomor Rekening / E-wallet" required />
+        <input type="text" name="whatsapp" placeholder="Nomor WhatsApp" required />
+
+        <div class="score-inputs">
+          <input type="number" name="skor1" min="0" max="20" value="0" />
+          <span>-</span>
+          <input type="number" name="skor2" min="0" max="20" value="0" />
+        </div>
+
+        <button type="submit" class="btn">Kirim Jawaban</button>
+      </form>
+      <p id="msg"></p>
+    </div>
+
+    <div class="result-card">
+      <h3>Result</h3>
+      <table id="resultTable">
+        <thead>
+          <tr>
+            <th>ID Member</th>
+            <th>Tebakan Skor</th>
+            <th>Waktu Tebakan</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
