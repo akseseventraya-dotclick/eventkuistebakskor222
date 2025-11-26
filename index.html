@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTC+07:00" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Event Kuis Tebak Skor MPO222</title>
   <link rel="stylesheet" href="style.css" />
@@ -12,7 +12,7 @@
 
     <div class="card">
       <h2>Event Kuis Tebak Skor MPO222</h2>
-      <p class="subtitle">LIGA PRIMER INGGRIS 2025/2026<br>Liga Primer Inggris-Pekan Ke-13</p>
+      <p class="subtitle">LIGA PRIMER INGGRIS 2025/2026<br>Liga Primer Inggris - Pekan Ke-13</p>
 
       <div class="match">
         <span>MANCHESTER CITY</span>
@@ -24,7 +24,7 @@
         <input type="text" name="idmember" placeholder="ID Member MPO222" required />
         <input type="text" name="namarek" placeholder="Nama Rekening" required />
         <input type="text" name="rekening" placeholder="Nomor Rekening / E-wallet" required />
-        <input type="text" name="whatsapp" placeholder="No.WhatsApp Aktif" required />
+        <input type="text" name="whatsapp" placeholder="No. WhatsApp Aktif" required />
 
         <div class="score-inputs">
           <input type="number" name="skor1" min="0" max="20" value="0" />
@@ -44,7 +44,7 @@
           <tr>
             <th>ID Member</th>
             <th>Tebakan Skor</th>
-            <th>Waktu Tebakan</th>
+            <th>Waktu Tebakan (WIB)</th>
           </tr>
         </thead>
         <tbody>
@@ -54,7 +54,38 @@
     </div>
   </div>
 
-  <!-- ubah ke script-google.js kalau mau versi Google Sheets -->
-  <script src="script.js"></script>
+  <script>
+    // Fungsi waktu WIB
+    function waktuWIB() {
+      return new Date().toLocaleString("id-ID", {
+        timeZone: "Asia/Jakarta",
+        hour12: false
+      });
+    }
+
+    document.getElementById("scoreForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const idmember = this.idmember.value;
+      const skor1 = this.skor1.value;
+      const skor2 = this.skor2.value;
+
+      const waktu = waktuWIB(); // waktu WIB
+
+      const table = document.getElementById("resultTable").querySelector("tbody");
+
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${idmember}</td>
+        <td>${skor1} - ${skor2}</td>
+        <td>${waktu}</td>
+      `;
+
+      table.appendChild(row);
+
+      document.getElementById("msg").innerText = "Tebakan berhasil dikirim!";
+      this.reset();
+    });
+  </script>
 </body>
 </html>
