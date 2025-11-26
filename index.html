@@ -4,15 +4,152 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Event Kuis Tebak Skor MPO222</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ==== BACKGROUND CUSTOM ==== */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+
+      /* GANTI URL GAMBAR DISINI SESUAI TEMA */
+      background: url("https://img.freepik.com/premium-photo/realistic-football-stadium-background_181203-18726.jpg") no-repeat center center fixed;
+      background-size: cover;
+
+      /* overlay gelap supaya teks tetap jelas */
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55); /* semi transparan */
+      z-index: -1;
+    }
+
+    /* Container utama */
+    .container {
+      max-width: 480px;
+      margin: 30px auto;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 20px;
+      border-radius: 10px;
+      color: #fff;
+      backdrop-filter: blur(5px);
+    }
+
+    .logo {
+      width: 160px;
+      display: block;
+      margin: 0 auto 15px;
+    }
+
+    .card, .result-card {
+      background: rgba(255, 255, 255, 0.09);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 14px;
+      color: #ddd;
+      margin-bottom: 15px;
+    }
+
+    .match {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .vs {
+      color: #ff5050;
+      margin: 0 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 5px;
+      border: none;
+      font-size: 14px;
+    }
+
+    .score-inputs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .score-inputs input {
+      width: 80px;
+      text-align: center;
+      font-size: 18px;
+    }
+
+    .score-inputs span {
+      font-size: 20px;
+      margin: 0 10px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background: #ffcc00;
+      border: none;
+      font-size: 16px;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 10px;
+      color: #fff;
+    }
+
+    table th, table td {
+      border: 1px solid #888;
+      padding: 6px;
+      text-align: center;
+    }
+
+    #msg {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #00ff90;
+    }
+  </style>
 </head>
+
 <body>
   <div class="container">
     <img src="https://i.ibb.co/F4yDvPSX/mpo222-search-250x250-base.png" alt="MPO222 Logo" class="logo" />
 
     <div class="card">
       <h2>Event Kuis Tebak Skor MPO222</h2>
-      <p class="subtitle">LIGA PRIMER INGGRIS 2025/2026<br>Liga Primer Inggris - Pekan Ke-13</p>
+      <p class="subtitle">LIGA PRIMER INGGRIS 2025/2026<br>Pekan Ke-13</p>
 
       <div class="match">
         <span>MANCHESTER CITY</span>
@@ -34,6 +171,7 @@
 
         <button type="submit" class="btn">Kirim Jawaban</button>
       </form>
+
       <p id="msg"></p>
     </div>
 
@@ -44,18 +182,16 @@
           <tr>
             <th>ID Member</th>
             <th>Tebakan Skor</th>
-            <th>Waktu Tebakan (WIB)</th>
+            <th>Waktu (WIB)</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- hasil tampil di sini -->
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </div>
 
   <script>
-    // Fungsi waktu WIB
+    // fungsi waktu WIB
     function waktuWIB() {
       return new Date().toLocaleString("id-ID", {
         timeZone: "Asia/Jakarta",
@@ -63,27 +199,27 @@
       });
     }
 
-    document.getElementById("scoreForm").addEventListener("submit", function (e) {
+    document.getElementById("scoreForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
       const idmember = this.idmember.value;
       const skor1 = this.skor1.value;
       const skor2 = this.skor2.value;
 
-      const waktu = waktuWIB(); // waktu WIB
+      const waktu = waktuWIB();
 
-      const table = document.getElementById("resultTable").querySelector("tbody");
-
+      const tbody = document.querySelector("#resultTable tbody");
       const row = document.createElement("tr");
+
       row.innerHTML = `
         <td>${idmember}</td>
         <td>${skor1} - ${skor2}</td>
         <td>${waktu}</td>
       `;
 
-      table.appendChild(row);
+      tbody.appendChild(row);
 
-      document.getElementById("msg").innerText = "Tebakan berhasil dikirim!";
+      document.getElementById("msg").textContent = "Tebakan berhasil dikirim!";
       this.reset();
     });
   </script>
