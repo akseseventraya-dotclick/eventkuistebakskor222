@@ -1,99 +1,61 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby591jg_6s4k1-zhhFW7zwBNLjtg0SusMskOg_Pi1mL1L3orN-QsaDegKElG1xDMLo/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbydWwnW_wgVnlc2Qeup4WWZpQY7SZEkUP8o_yEw2R9ZF-jiG_TnSvqVPS-MM3q192w/exec";
 
-let CURRENT_EVENT_ID = null;
+let CURRENT_EVENT = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("scoreForm");
-  const msg = document.getElementById("msg");
-
-  /* =========================
-     LOAD EVENT AKTIF
-  ========================= */
-  fetch(SCRIPT_URL)
-    .then(res => res.json())
-    .then(data => {
-      const event = data.event;
-
-      CURRENT_EVENT_ID = event.event_id;
-
-      document.querySelector(".subtitle").innerHTML =
-        `${event.liga}<br>Pekan Ke-${event.pekan}`;
-
-      document.querySelector(".match").innerHTML = `
-        <span>${event.home}</span>
-        <span class="vs">VS</span>
-        <span>${event.away}</span>
-      `;
-
-      loadResult();
-    })
-    .catch(() => {
-      msg.textContent = "❌ Gagal load event";
-    });
-
-  /* =========================
-     SUBMIT FORM
-  ========================= */
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-
-    if (!CURRENT_EVENT_ID) {
-      msg.textContent = "❌ Event belum siap";
-      return;
-    }
-
-    const payload = {
-      event_id: CURRENT_EVENT_ID,
-      id_member: form.idmember.value,
-      nama_rek: form.namarek.value,
-      norek: form.rekening.value,
-      whatsapp: form.whatsapp.value,
-      skor1: form.skor1.value,
-      skor2: form.skor2.value
-    };
-
-    fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-      .then(res => res.json())
-      .then(res => {
-        if (res.error) {
-          msg.textContent = "❌ " + res.error;
-          return;
-        }
-
-        msg.textContent = "✅ Tebakan berhasil dikirim";
-        form.reset();
-        loadResult();
-      })
-      .catch(() => {
-        msg.textContent = "❌ Koneksi error";
-      });
-  });
+  loadEvent();
+  document.getElementById("scoreForm").addEventListener("submit", submitForm);
 });
 
-/* =========================
-   LOAD RESULT
-========================= */
-function loadResult() {
+function loadEvent() {
   fetch(SCRIPT_URL)
-    .then(res => res.json())
-    .then(data => {
-      const tbody = document.querySelector("#resultTable tbody");
-      tbody.innerHTML = "";
+    .then(r => r.json())
+    .then(d => {
+      CURRENT_EVENT = d.event;
+      document.querySelector(".subtitle").innerHTML =
+        `${d.event.liga}<br>Pekan Ke-${d.event.pekan}`;
 
-      data.result.forEach(row => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${row.id}</td>
-          <td>${row.skor}</td>
-          <td>${new Date(row.waktu).toLocaleString("id-ID", {
-            timeZone: "Asia/Jakarta"
-          })}</td>
-        `;
-        tbody.appendChild(tr);
-      });
+      document.querySelector(".match").innerHTML =
+        `${d.event.home} <span class="vs">VS</span> ${d.event.away}`;
+
+      renderResult(d.result);
     });
+}
+
+function submitForm(e) {
+  e.preventDefault();
+  const f = e.target;
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id_member: f.idmember.value,
+      nama_rek: f.namarek.value,
+      norek: f.rekening.value,
+      whatsapp: f.whatsapp.value,
+      skor1: f.skor1.value,
+      skor2: f.skor2.value
+    })
+  })
+    .then(r => r.json())
+    .then(res => {
+      document.getElementById("msg").textContent =
+        res.error ? "❌ " + res.error : "✅ Berhasil";
+      loadEvent();
+      f.reset();
+    });
+}
+
+function renderResult(rows) {
+  const tbody = document.querySelector("#resultTable tbody");
+  tbody.innerHTML = "";
+  rows.forEach(r => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${r.id}</td>
+        <td>${r.skor}</td>
+        <td>${new Date(r.waktu).toLocaleString("id-ID",{timeZone:"Asia/Jakarta"})}</td>
+      </tr>`;
+  });
 }
