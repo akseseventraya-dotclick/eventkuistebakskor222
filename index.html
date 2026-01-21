@@ -189,38 +189,64 @@
     </div>
   </div>
 
-  <script>
-    // fungsi waktu WIB
-    function waktuWIB() {
-      return new Date().toLocaleString("id-ID", {
-        timeZone: "Asia/Jakarta",
-        hour12: false
-      });
-    }
+<script>
+function waktuWIB() {
+  return new Date().toLocaleString("id-ID", {
+    timeZone: "Asia/Jakarta",
+    hour12: false
+  });
+}
 
-    document.getElementById("scoreForm").addEventListener("submit", function(e) {
-      e.preventDefault();
+document.getElementById("scoreForm").addEventListener("submit", function(e) {
+  e.preventDefault();
 
-      const idmember = this.idmember.value;
-      const skor1 = this.skor1.value;
-      const skor2 = this.skor2.value;
+  const data = {
+    event: EVENT_ID,
+    id_member: this.idmember.value,
+    nama_rek: this.namarek.value,
+    norek: this.rekening.value,
+    whatsapp: this.whatsapp.value,
+    skor1: this.skor1.value,
+    skor2: this.skor2.value
+  };
 
-      const waktu = waktuWIB();
-
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(() => {
+    document.getElementById("msg").textContent = "✅ Tebakan berhasil dikirim!";
+    this.reset();
+    loadResult(); // refresh tabel
+  })
+  .catch(() => {
+    document.getElementById("msg").textContent = "❌ Gagal kirim data";
+  });
+});
+<script>
+function loadResult() {
+  fetch(SCRIPT_URL)
+    .then(res => res.json())
+    .then(rows => {
       const tbody = document.querySelector("#resultTable tbody");
-      const row = document.createElement("tr");
+      tbody.innerHTML = "";
 
-      row.innerHTML = `
-        <td>${idmember}</td>
-        <td>${skor1} - ${skor2}</td>
-        <td>${waktu}</td>
-      `;
-
-      tbody.appendChild(row);
-
-      document.getElementById("msg").textContent = "Tebakan berhasil dikirim!";
-      this.reset();
+      rows
+        .filter(r => r.event === EVENT_ID) // 🔥 FILTER EVENT
+        .forEach(r => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${r.id_member}</td>
+            <td>${r.skor}</td>
+            <td>${new Date(r.timestamp).toLocaleString("id-ID")}</td>
+          `;
+          tbody.appendChild(tr);
+        });
     });
-  </script>
+}
+
+window.onload = loadResult;
+</script>
 </body>
 </html>
