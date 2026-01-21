@@ -1,4 +1,4 @@
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIW9XNL-JwVo44db8NVSRSs3c5_4A6v8y1iv7FLpzCnyWNtBKSLhLunb2_VUJqrDs/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwQmgdPM2XKOpgdM-tIySEcOuAXZqMUXrOv41VfjjQo0bzIIeGrAFwV3F2ChF2dIaY/exec";
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -8,11 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", function(e) {
     e.preventDefault();
 
-    const data = {
-      id: this.idmember.value,
-      skor1: this.skor1.value,
-      skor2: this.skor2.value
-    };
+  const data = {
+    event: EVENT_ID,
+    id_member: idmember.value,
+    nama_rek: namarek.value,
+    norek: norek.value,
+    whatsapp: whatsapp.value,
+    skor1: skor1.value,
+    skor2: skor2.value
+  };
+
 
     fetch(SCRIPT_URL, {
       method: "POST",
