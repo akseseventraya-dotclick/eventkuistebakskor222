@@ -1,18 +1,54 @@
-document.getElementById("scoreForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyIW9XNL-JwVo44db8NVSRSs3c5_4A6v8y1iv7FLpzCnyWNtBKSLhLunb2_VUJqrDs/exec";
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const form = document.getElementById("scoreForm");
   const msg = document.getElementById("msg");
 
-  const id = this.idmember.value;
-  const skor1 = this.skor1.value;
-  const skor2 = this.skor2.value;
-  const waktu = new Date().toLocaleString("id-ID");
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  const table = document.getElementById("resultTable").getElementsByTagName("tbody")[0];
-  const row = table.insertRow(0);
-  row.insertCell(0).textContent = id;
-  row.insertCell(1).textContent = `${skor1} - ${skor2}`;
-  row.insertCell(2).textContent = waktu;
+    const data = {
+      id: this.idmember.value,
+      skor1: this.skor1.value,
+      skor2: this.skor2.value
+    };
 
-  msg.textContent = "✅ Tebakan berhasil dikirim!";
-  this.reset();
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    .then(() => {
+      msg.textContent = "✅ Tebakan berhasil dikirim!";
+      loadResult();
+      form.reset();
+    })
+    .catch(() => {
+      msg.textContent = "❌ Koneksi error";
+    });
+  });
+
+  loadResult();
 });
+
+function loadResult() {
+  fetch(SCRIPT_URL)
+    .then(res => res.json())
+    .then(data => {
+      const table = document
+        .getElementById("resultTable")
+        .getElementsByTagName("tbody")[0];
+
+      table.innerHTML = "";
+
+      data.forEach(row => {
+        const tr = table.insertRow();
+        tr.insertCell(0).textContent = row.id;
+        tr.insertCell(1).textContent = `${row.skor1} - ${row.skor2}`;
+        tr.insertCell(2).textContent = row.waktu;
+      });
+    });
+}
