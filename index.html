@@ -1,252 +1,51 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Event Kuis Tebak Skor MPO222</title>
-
-  <style>
-    /* ==== BACKGROUND CUSTOM ==== */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-
-      background: url("https://i.ibb.co/PG6Cqj7T/Pngtree-spectacular-3d-rendering-of-a-5806442-1.jpg") no-repeat center center fixed;
-      background-size: cover;
-
-      /* overlay gelap supaya teks tetap jelas */
-      position: relative;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.55); /* semi transparan */
-      z-index: -1;
-    }
-
-    /* Container utama */
-    .container {
-      max-width: 480px;
-      margin: 30px auto;
-      background: rgba(0, 0, 0, 0.75);
-      padding: 20px;
-      border-radius: 10px;
-      color: #fff;
-      backdrop-filter: blur(5px);
-    }
-
-    .logo {
-      width: 160px;
-      display: block;
-      margin: 0 auto 15px;
-    }
-
-    .card, .result-card {
-      background: rgba(255, 255, 255, 0.09);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-
-    h2, h3 {
-      text-align: center;
-      color: #ffd700;
-      margin-bottom: 10px;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 14px;
-      color: #ddd;
-      margin-bottom: 15px;
-    }
-
-    .match {
-      text-align: center;
-      font-size: 18px;
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
-
-    .vs {
-      color: #ff5050;
-      margin: 0 10px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 6px 0;
-      border-radius: 5px;
-      border: none;
-      font-size: 14px;
-    }
-
-    .score-inputs {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 10px 0;
-    }
-
-    .score-inputs input {
-      width: 80px;
-      text-align: center;
-      font-size: 18px;
-    }
-
-    .score-inputs span {
-      font-size: 20px;
-      margin: 0 10px;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      background: #ffcc00;
-      border: none;
-      font-size: 16px;
-      color: #000;
-      font-weight: bold;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      margin-top: 10px;
-      color: #fff;
-    }
-
-    table th, table td {
-      border: 1px solid #888;
-      padding: 6px;
-      text-align: center;
-    }
-
-    #msg {
-      text-align: center;
-      margin-top: 10px;
-      font-weight: bold;
-      color: #00ff90;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Kuis MPO222</title>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <div class="container">
-    <img src="https://i.ibb.co/F4yDvPSX/mpo222-search-250x250-base.png" alt="MPO222 Logo" class="logo" />
+<div class="container">
+  <img class="logo" src="https://i.ibb.co/F4yDvPSX/mpo222-search-250x250-base.png">
 
-    <div class="card">
-      <h2>Event Kuis Tebak Skor MPO222</h2>
-      <p class="subtitle">LIGA PRIMER INGGRIS 2025/2026<br>Pekan Ke-13</p>
+  <div class="card">
+    <h2>Event Kuis Tebak Skor MPO222</h2>
+    <p class="subtitle"></p>
 
-      <div class="match">
-        <span>MANCHESTER CITY</span>
-        <span class="vs">VS</span>
-        <span>LEEDS UNITED</span>
+    <div class="match"></div>
+
+    <form id="scoreForm">
+      <input name="idmember" placeholder="ID Member" required>
+      <input name="namarek" placeholder="Nama Rekening" required>
+      <input name="rekening" placeholder="Nomor Rekening" required>
+      <input name="whatsapp" placeholder="No WhatsApp" required>
+
+      <div class="score-inputs">
+        <input type="number" name="skor1" value="0">
+        <span>-</span>
+        <input type="number" name="skor2" value="0">
       </div>
 
-      <form id="scoreForm">
-        <input type="text" name="idmember" placeholder="ID Member MPO222" required />
-        <input type="text" name="namarek" placeholder="Nama Rekening" required />
-        <input type="text" name="rekening" placeholder="Nomor Rekening / E-wallet" required />
-        <input type="text" name="whatsapp" placeholder="No. WhatsApp Aktif" required />
+      <button class="btn">Kirim Jawaban</button>
+    </form>
 
-        <div class="score-inputs">
-          <input type="number" name="skor1" min="0" max="20" value="0" />
-          <span>-</span>
-          <input type="number" name="skor2" min="0" max="20" value="0" />
-        </div>
-
-        <button type="submit" class="btn">Kirim Jawaban</button>
-      </form>
-
-      <p id="msg"></p>
-    </div>
-
-    <div class="result-card">
-      <h3>Result</h3>
-      <table id="resultTable">
-        <thead>
-          <tr>
-            <th>ID Member</th>
-            <th>Tebakan Skor</th>
-            <th>Waktu (WIB)</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <p id="msg"></p>
   </div>
 
-<script>
-function waktuWIB() {
-  return new Date().toLocaleString("id-ID", {
-    timeZone: "Asia/Jakarta",
-    hour12: false
-  });
-}
+  <div class="result-card">
+    <h3>Result</h3>
+    <table id="resultTable">
+      <thead>
+        <tr><th>ID</th><th>Skor</th><th>Waktu</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
 
-document.getElementById("scoreForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  const data = {
-    event: EVENT_ID,
-    id_member: this.idmember.value,
-    nama_rek: this.namarek.value,
-    norek: this.rekening.value,
-    whatsapp: this.whatsapp.value,
-    skor1: this.skor1.value,
-    skor2: this.skor2.value
-  };
-
-  fetch(SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify(data)
-  })
-  .then(res => res.json())
-  .then(() => {
-    document.getElementById("msg").textContent = "✅ Tebakan berhasil dikirim!";
-    this.reset();
-    loadResult(); // refresh tabel
-  })
-  .catch(() => {
-    document.getElementById("msg").textContent = "❌ Gagal kirim data";
-  });
-});
-<script>
-function loadResult() {
-  fetch(SCRIPT_URL)
-    .then(res => res.json())
-    .then(rows => {
-      const tbody = document.querySelector("#resultTable tbody");
-      tbody.innerHTML = "";
-
-      rows
-        .filter(r => r.event === EVENT_ID) // 🔥 FILTER EVENT
-        .forEach(r => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${r.id_member}</td>
-            <td>${r.skor}</td>
-            <td>${new Date(r.timestamp).toLocaleString("id-ID")}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-    });
-}
-
-window.onload = loadResult;
-</script>
+<script src="script.js"></script>
 </body>
 </html>
